@@ -9,7 +9,7 @@ app.use(express.json())
 app.use(cors())
 
 const dbConnection = () => {
-    mongoose.connect("mongodb+srv://root:root@cluster1.w15nq.mongodb.net/project1?retryWrites=true&w=majority",
+    mongoose.connect(process.env.MONGODB_URL,
     // {useNewUrlParser: true}
     (err)=>{
       if (!err) {
@@ -35,7 +35,7 @@ app.post("/createUser", async (req, res) => {
     res.json(user)
 })
 
-app.get("/getUsers", (request, response) => {
+app.get("/", (request, response) => {
     UserModel.find({}, (err, result) => {
         if (!err) {
             response.json(result)
@@ -71,8 +71,13 @@ app.delete("/deleteUser/:id", async (req, res) => {
     res.send("User has been successfully deleted from DB")
 })
 
+if(process.env.NODE_ENV == "production"){
+    app.use(express.static("cliend/build"));
+}
 
-const PORT = process.env.PORT || 8000
+
+const PORT = process.env.PORT || 8000;
+
 app.listen(PORT, () => {
-    console.log(`Server is running perfectly on port ${PORT}`)
+    console.log(`Server is running perfectly on port: http://localhost:${PORT}`)
 })
