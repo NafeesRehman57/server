@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const app = express();
 const mongoose = require("mongoose")
@@ -71,7 +72,7 @@ app.delete("/deleteUser/:id", async (req, res) => {
 })
 
 
-const PORT = "8000"
-app.listen(process.env.PORT || 8000, () => {
+const PORT = process.env.PORT || 8000
+app.listen(PORT, () => {
     console.log(`Server is running perfectly on port ${PORT}`)
 })
